@@ -1,5 +1,5 @@
 #include "quicksort.hpp"
 
-void quicksort(int *a, unsigned int n) {
+void quicksort(int *a, unsigned int n, pivot_index_type type) {
 
 }

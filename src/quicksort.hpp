@@ -1,6 +1,12 @@
 #ifndef QUICKSORT_HPP
 #define QUICKSORT_HPP
 
-void quicksort(int *a, unsigned int n);
+enum class pivot_index_type {
+    FIRST,
+    LAST,
+    RANDOM
+};
+
+void quicksort(int *a, unsigned int n, pivot_index_type type);
 
 #endif //QUICKSORT_HPP
