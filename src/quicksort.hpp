@@ -7,6 +7,6 @@ enum class pivot_index_type {
     RANDOM
 };
 
-void quicksort(int *a, unsigned int n, pivot_index_type type);
+void quicksort(int *a, unsigned int n, pivot_index_type pivot_type);
 
 #endif //QUICKSORT_HPP
