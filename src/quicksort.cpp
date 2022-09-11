@@ -27,9 +27,17 @@ void make_quick_sorting(int *a, unsigned int l, unsigned int r, pivot_index_type
     
     unsigned int i{choose_pivot_index(pivot_type, l, r)};
     swap_elements(a[l], a[i]);
+
     unsigned int j{make_partition(a, l, r)};
-    make_quick_sorting(a, l, j - 1, pivot_type);
-    make_quick_sorting(a, j + 1, r, pivot_type);
+
+    if (static_cast<int>(j - 1) < 0) {
+        make_quick_sorting(a, l, 0, pivot_type);
+        make_quick_sorting(a, 1, r, pivot_type);
+    }
+    else {
+        make_quick_sorting(a, l, j - 1, pivot_type);
+        make_quick_sorting(a, j + 1, r, pivot_type);
+    }
 }
 
 bool is_base_case(unsigned int l, unsigned int r) {
@@ -45,14 +53,15 @@ unsigned int choose_pivot_index(pivot_index_type pivot_type, unsigned int l, uns
         return r;
     
     default:
-        return rand() % r + l;
+        srand(time(0));
+        return l + rand() % (r - l + 1);
     }
 }
 
 void swap_elements(int &a, int &b) {
-    a += b;
-    b = a - b;
-    a -= b;
+    int temp{a};
+    a = b;
+    b = temp;
 }
 
 unsigned int make_partition(int *a, unsigned int l, unsigned int r) {
