@@ -4,7 +4,8 @@
 enum class pivot_index_type {
     FIRST,
     LAST,
-    RANDOM
+    RANDOM,
+    MEDIAN
 };
 
 void quicksort(int *a, unsigned int n, pivot_index_type pivot_type);

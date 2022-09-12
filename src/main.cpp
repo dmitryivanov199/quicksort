@@ -4,6 +4,8 @@
 
 bool run_tests();
 
+unsigned int get_random_array_number();
+
 void fill_array(int *a, unsigned int n);
 
 void copy_array(int *dst, const int *src, unsigned int n);
@@ -24,10 +26,10 @@ int main() {
 }
 
 bool run_tests() {
-    const unsigned int n{100};
     const unsigned int tests_number{10000};
 
     for (unsigned int i{0}; i < tests_number; i++) {
+        const unsigned int n{get_random_array_number()};
         int source_a[n];
         fill_array(source_a, n);
 
@@ -47,14 +49,26 @@ bool run_tests() {
         copy_array(my_sorted_a_random, source_a, n);
         quicksort(my_sorted_a_random, n, pivot_index_type::RANDOM);
 
+        int my_sorted_a_median[n];
+        copy_array(my_sorted_a_median, source_a, n);
+        quicksort(my_sorted_a_median, n, pivot_index_type::MEDIAN);
+
         if (!compare_arrays(my_sorted_a_first, std_sorted_a, n) ||
             !compare_arrays(my_sorted_a_last, std_sorted_a, n) ||
-            !compare_arrays(my_sorted_a_random, std_sorted_a, n)) {
+            !compare_arrays(my_sorted_a_random, std_sorted_a, n) ||
+            !compare_arrays(my_sorted_a_median, std_sorted_a, n)) {
             return false;
         }
     }
 
     return true;
+}
+
+unsigned int get_random_array_number() {
+    const unsigned int min{1};
+    const unsigned int max{1000};
+    srand(time(0));
+    return min + rand() % (max - min + 1);
 }
 
 void fill_array(int *a, unsigned int n) {

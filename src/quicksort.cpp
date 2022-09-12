@@ -6,7 +6,9 @@ static void make_quick_sorting(int *a, unsigned int l, unsigned int r, pivot_ind
 
 static bool is_base_case(unsigned int l, unsigned int r);
 
-static unsigned int choose_pivot_index(pivot_index_type pivot_type, unsigned int l, unsigned int r);
+static unsigned int choose_pivot_index(const int *a, unsigned int l, unsigned int r, pivot_index_type pivot_type);
+
+static unsigned int get_median_index(const int *a, unsigned int l, unsigned int r);
 
 static void swap_elements(int &a, int &b);
 
@@ -25,7 +27,7 @@ void make_quick_sorting(int *a, unsigned int l, unsigned int r, pivot_index_type
         return;
     }
     
-    unsigned int i{choose_pivot_index(pivot_type, l, r)};
+    unsigned int i{choose_pivot_index(a, l, r, pivot_type)};
     swap_elements(a[l], a[i]);
 
     unsigned int j{make_partition(a, l, r)};
@@ -44,7 +46,7 @@ bool is_base_case(unsigned int l, unsigned int r) {
     return l >= r;
 }
 
-unsigned int choose_pivot_index(pivot_index_type pivot_type, unsigned int l, unsigned int r) {
+unsigned int choose_pivot_index(const int *a, unsigned int l, unsigned int r, pivot_index_type pivot_type) {
     switch (pivot_type) {
     case pivot_index_type::FIRST:
         return l;
@@ -52,9 +54,28 @@ unsigned int choose_pivot_index(pivot_index_type pivot_type, unsigned int l, uns
     case pivot_index_type::LAST:
         return r;
     
-    default:
+    case pivot_index_type::RANDOM:
         srand(time(0));
         return l + rand() % (r - l + 1);
+
+    default:
+        return get_median_index(a, l, r);
+    }
+}
+
+unsigned int get_median_index(const int *a, unsigned int l, unsigned int r) {
+    const unsigned int middle_index{(r - l) / 2};
+    int sample[3]{a[l], a[middle_index], a[r]};
+    quicksort(sample, 3, pivot_index_type::FIRST);
+
+    if (sample[1] == a[l]) {
+        return l;
+    }
+    else if (sample[1] == a[middle_index]) {
+        return middle_index;
+    }
+    else {
+        return r;
     }
 }
 
